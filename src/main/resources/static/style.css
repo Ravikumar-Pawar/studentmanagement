@@ -1,0 +1,8 @@
+/* Custom styles (optional) */
+.container {
+    max-width: 800px;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
