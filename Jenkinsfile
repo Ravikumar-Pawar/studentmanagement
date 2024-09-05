@@ -67,16 +67,21 @@ pipeline {
                         done
                     '''
 
-                    // Copy the built artifacts to the deployment directory
+                    // Copy only the JAR file to the deployment directory
+                    echo 'Copying JAR file to deployment directory...'
                     sh "cp target/studentmanagement-*.jar ${deployDir}/"
-
 
                     // Change to the deployment directory
                     dir(deployDir) {
+                        // Verify JAR file is present
+                        sh 'ls -l'
+
                         // Start the application in the background
                         echo 'Starting the application in the background...'
-                        sh "nohup java -jar studentmanagement-*.jar > ${logDir}/app.log 2>&1 &"
-
+                        sh '''
+                            nohup java -jar studentmanagement-*.jar > ${logDir}/app.log 2>&1 &
+                            echo "Started application with PID $(pgrep -f studentmanagement)"
+                        '''
                     }
                 }
             }
