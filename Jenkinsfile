@@ -76,12 +76,18 @@ pipeline {
                         // Verify JAR file is present
                         sh 'ls -l'
 
+                        // Make the JAR file executable
+                        echo 'Making JAR file executable...'
+                        sh 'chmod +x studentmanagement-0.0.1-SNAPSHOT.jar'
+
                         // Start the application in the background
                         echo 'Starting the application in the background...'
                         sh '''
                             nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log 2>&1 &
                             echo "Started application with PID $(pgrep -f studentmanagement)"
                         '''
+                        // Confirm the application is running
+                        sh 'pgrep -f studentmanagement'
                     }
                 }
             }
