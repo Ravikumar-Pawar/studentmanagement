@@ -71,13 +71,13 @@ pipeline {
                     // Stop and remove any existing container defined in the Docker Compose file
                     echo 'Stopping and removing any existing containers...'
                     sh """
-                        docker-compose -f ${composeFile} down || true
+                        docker compose -f ${composeFile} down || true
                     """
 
                     // Run Docker Compose to start the containers
                     echo 'Starting containers with Docker Compose...'
                     sh """
-                        docker-compose -f ${composeFile} up -d
+                        docker compose -f ${composeFile} up -d
                     """
 
                     // Confirm the application is running
