@@ -79,8 +79,7 @@ pipeline {
                         // Start the application in the background
                         echo 'Starting the application in the background...'
                         sh '''
-                            java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log 2>&1 &
-                            disown
+                            nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log 2>&1 &
                             echo "Started application in the background."
                         '''
 
