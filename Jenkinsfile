@@ -67,27 +67,25 @@ pipeline {
                         done
                     '''
 
-                    // Copy only the JAR file to the deployment directory
-                    echo 'Copying JAR file to deployment directory...'
-                    sh "cp target/studentmanagement-0.0.1-SNAPSHOT.jar ${deployDir}/"
+                    // Copy the JAR file and the start script to the deployment directory
+                    echo 'Copying JAR file and start script to deployment directory...'
+                    sh '''
+                        cp target/studentmanagement-0.0.1-SNAPSHOT.jar ${deployDir}/
+                        cp start.sh ${deployDir}/
+                    '''
 
                     // Change to the deployment directory
                     dir(deployDir) {
-                        // Verify JAR file is present
+                        // Verify files are present
                         sh 'ls -l'
 
-                        // Make the JAR file executable
-                        echo 'Making JAR file executable...'
-                        sh 'chmod +x studentmanagement-0.0.1-SNAPSHOT.jar'
+                        // Make the start script executable
+                        echo 'Making start script executable...'
+                        sh 'chmod +x start.sh'
 
-                        // Start the application in the background
-                        echo 'Starting the application in the background...'
-                        sh '''
-                            nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log 2>&1 &
-                            echo "Started application with PID $(pgrep -f studentmanagement)"
-                        '''
-                        // Confirm the application is running
-                        sh 'pgrep -f studentmanagement'
+                        // Run the start script
+                        echo 'Running the start script...'
+                        sh './start.sh'
                     }
                 }
             }
