@@ -70,6 +70,7 @@ pipeline {
                     // Copy the JAR file to the deployment directory
                     echo 'Copying JAR file to deployment directory...'
                     sh "cp target/studentmanagement-0.0.1-SNAPSHOT.jar ${deployDir}/"
+                    sh "cp start.sh ${deployDir}/"
 
                     // Change to the deployment directory
                     dir(deployDir) {
@@ -78,10 +79,11 @@ pipeline {
 
                         // Start the application in the background using nohup
                         echo 'Starting the application in the background...'
-                        sh '''
-                            java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log
-                            echo "Started application with PID $(pgrep -f studentmanagement)"
-                        '''
+//                         sh '''
+//                             java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log
+//                             echo "Started application with PID $(pgrep -f studentmanagement)"
+//                         '''
+                            sh '''./start.sh'''
 
                         // Confirm the application is running
                         echo 'Confirming the application is running...'
