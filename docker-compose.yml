@@ -7,7 +7,7 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/student_management
+      - SPRING_DATASOURCE_URL=jdbc:mysql://172.18.0.1:3306/student_management
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=
     networks:
