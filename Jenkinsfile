@@ -68,13 +68,15 @@ pipeline {
                     '''
 
                     // Copy the built artifacts to the deployment directory
-                    sh "cp -r target/* ${deployDir}/"
+                    sh "cp target/studentmanagement-*.jar ${deployDir}/"
+
 
                     // Change to the deployment directory
                     dir(deployDir) {
                         // Start the application in the background
                         echo 'Starting the application in the background...'
-                        sh "nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > ${logDir}/app.log 2>&1 &"
+                        sh "nohup java -jar studentmanagement-*.jar > ${logDir}/app.log 2>&1 &"
+
                     }
                 }
             }
