@@ -70,6 +70,7 @@ pipeline {
                     // Copy the JAR file to the deployment directory
                     echo 'Copying JAR file to deployment directory...'
                     sh "cp target/studentmanagement-0.0.1-SNAPSHOT.jar ${deployDir}/"
+                    sh "cp studentmanagement.service ${deployDir}/"
 
                     // Change to the deployment directory
                     dir(deployDir) {

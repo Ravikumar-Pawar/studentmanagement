@@ -1,0 +1,16 @@
+[Unit]
+Description=Student Management Application
+After=network.target
+
+[Service]
+User=jenkins
+WorkingDirectory=/home/rpawar/Desktop/deployment
+ExecStart=/usr/bin/java -jar /home/rpawar/Desktop/deployment/studentmanagement-0.0.1-SNAPSHOT.jar
+SuccessExitStatus=143
+Restart=on-failure
+RestartSec=10
+StandardOutput=append:/home/rpawar/Desktop/deployment/logs/app.log
+StandardError=append:/home/rpawar/Desktop/deployment/logs/error.log
+
+[Install]
+WantedBy=multi-user.target
