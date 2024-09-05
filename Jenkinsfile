@@ -18,6 +18,14 @@ pipeline {
                     // Check Java version
                     echo 'Checking Java version...'
                     sh 'java -version'
+
+                    // Check Docker version
+                    echo 'Checking Docker version...'
+                    sh 'docker --version'
+
+                    // Check Docker Compose version
+                    echo 'Checking Docker Compose version...'
+                    sh 'docker-compose --version'
                 }
             }
         }
@@ -52,39 +60,31 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Deploy with Docker Compose') {
             steps {
                 script {
-                    echo 'Deploying and running Docker container...'
+                    echo 'Deploying with Docker Compose...'
 
-                    // Define Docker image name and container name
-                    def imageName = 'studentmanagement:latest'
-                    def containerName = 'studentmanagement-container'
+                    // Define Docker Compose file path
+                    def composeFile = 'docker-compose.yml'
 
-                    // Stop and remove any existing container
-                    echo 'Stopping and removing any existing container...'
+                    // Stop and remove any existing container defined in the Docker Compose file
+                    echo 'Stopping and removing any existing containers...'
                     sh """
-                        docker stop ${containerName} || true
-                        docker rm ${containerName} || true
+                        docker-compose -f ${composeFile} down || true
                     """
 
-                    // Remove any existing Docker image to avoid conflicts (optional)
-                    echo 'Removing any existing Docker image...'
+                    // Run Docker Compose to start the containers
+                    echo 'Starting containers with Docker Compose...'
                     sh """
-                        docker rmi ${imageName} || true
+                        docker-compose -f ${composeFile} up -d
                     """
 
-                    // Run the Docker container
-                    echo 'Running Docker container...'
-                    sh """
-                        docker run -d --name ${containerName} -p 8081:8081 ${imageName}
-                    """
-
-                    // Confirm the container is running
-                    echo 'Confirming the Docker container is running...'
+                    // Confirm the application is running
+                    echo 'Confirming the application is running...'
                     sh '''
-                        sleep 10  # Give some time for the container to start
-                        if docker ps | grep -q studentmanagement-container; then
+                        sleep 10  # Give some time for the containers to start
+                        if docker-compose ps | grep -q studentmanagement; then
                             echo "Docker container is running."
                         else
                             echo "Docker container is not running."
