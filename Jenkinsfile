@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout code from GitHub using token authentication
-                git credentialsId: 'github-login', url: 'https://github.com/Ravikumar-Pawar/studentmanagement.git'
+                // Checkout code from GitHub using token authentication and specify the branch
+                git branch: 'main', credentialsId: 'github-login', url: 'https://github.com/Ravikumar-Pawar/studentmanagement.git'
             }
         }
 
