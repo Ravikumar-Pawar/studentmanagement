@@ -76,11 +76,11 @@ pipeline {
                         // Verify JAR file is present
                         sh 'ls -l'
 
-                        // Schedule the application to start in the background using `at`
-                        echo 'Scheduling the application to start...'
+                        // Start the application in the background using nohup
+                        echo 'Starting the application in the background...'
                         sh '''
-                            echo "java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log 2>&1 &" | at now
-                            echo "Scheduled application start."
+                            nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log 2>&1 &
+                            echo "Started application with PID $(pgrep -f studentmanagement)"
                         '''
 
                         // Confirm the application is running
