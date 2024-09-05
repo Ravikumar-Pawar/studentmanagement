@@ -47,21 +47,33 @@ pipeline {
                 script {
                     echo 'Deploying and running on local system...'
 
-                    // Define the local deployment directory
+                    // Define the local deployment directory and log directory
                     def deployDir = '/home/rpawar/Desktop/deployment'
+                    def logDir = "${deployDir}/logs"
 
-                    // Ensure the deployment directory exists
+                    // Ensure the deployment and log directories exist
                     sh "mkdir -p ${deployDir}"
+                    sh "mkdir -p ${logDir}"
+
+                    // Kill any existing processes on port 8081
+                    echo 'Checking for and killing any processes running on port 8081...'
+                    sh '''
+                        if lsof -i :8081; then
+                            echo "Killing processes running on port 8081..."
+                            lsof -t -i :8081 | xargs kill -9
+                        else
+                            echo "No processes running on port 8081."
+                        fi
+                    '''
 
                     // Copy the built artifacts to the deployment directory
                     sh "cp -r target/* ${deployDir}/"
 
                     // Change to the deployment directory
                     dir(deployDir) {
-                        // Example command to run the application (adjust as needed)
-                        // This assumes your application can be started with a jar file. Adjust if using a different type of application.
-                        echo 'Starting the application...'
-                        sh 'java -jar studentmanagement-0.0.1-SNAPSHOT.jar'
+                        // Start the application in the background
+                        echo 'Starting the application in the background...'
+                        sh "nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > ${logDir}/app.log 2>&1 &"
                     }
                 }
             }
