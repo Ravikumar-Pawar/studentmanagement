@@ -67,31 +67,38 @@ pipeline {
                         done
                     '''
 
-                    // Copy the JAR file to the deployment directory
-                    echo 'Copying JAR file to deployment directory...'
+                    // Copy the JAR file and service file to the deployment directory
+                    echo 'Copying JAR and service files to deployment directory...'
                     sh "cp target/studentmanagement-0.0.1-SNAPSHOT.jar ${deployDir}/"
                     sh "cp studentmanagement.service ${deployDir}/"
 
                     // Change to the deployment directory
                     dir(deployDir) {
-                        // Verify JAR file is present
+                        // Verify files are present
                         sh 'ls -l'
 
-                        // Start the application in the background using nohup
-                        echo 'Starting the application in the background...'
+                        // Create a symlink for the service file and reload systemd
+                        echo 'Setting up the service...'
                         sh '''
-                            nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log 2>&1 &
-                            echo "Started application with PID $(pgrep -f studentmanagement)"
+                            sudo ln -sf ${PWD}/studentmanagement.service /etc/systemd/system/studentmanagement.service
+                            sudo systemctl daemon-reload
+                            sudo systemctl enable studentmanagement.service
                         '''
 
-                        // Confirm the application is running
-                        echo 'Confirming the application is running...'
+                        // Start the service
+                        echo 'Starting the application service...'
                         sh '''
-                            sleep 10  # Give some time for the application to start
-                            if pgrep -f studentmanagement > /dev/null; then
-                                echo "Application is running."
+                            sudo systemctl start studentmanagement.service
+                        '''
+
+                        // Confirm the application service is running
+                        echo 'Confirming the application service is running...'
+                        sh '''
+                            if sudo systemctl is-active --quiet studentmanagement.service; then
+                                echo "Application service is running."
                             else
-                                echo "Application is not running."
+                                echo "Application service failed to start."
+                                sudo journalctl -xe
                                 exit 1
                             fi
                         '''
