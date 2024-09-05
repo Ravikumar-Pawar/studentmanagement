@@ -18,10 +18,6 @@ pipeline {
                     // Check Java version
                     echo 'Checking Java version...'
                     sh 'java -version'
-
-                    // Check Git connectivity
-                    echo 'Checking Git connectivity...'
-                    sh 'git ls-remote https://github.com/Ravikumar-Pawar/studentmanagement.git'
                 }
             }
         }
