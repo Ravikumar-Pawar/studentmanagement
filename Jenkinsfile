@@ -84,7 +84,7 @@ pipeline {
                     echo 'Confirming the application is running...'
                     sh '''
                         sleep 10  # Give some time for the containers to start
-                        if docker-compose ps | grep -q studentmanagement; then
+                        if docker compose ps | grep -q studentmanagement; then
                             echo "Docker container is running."
                         else
                             echo "Docker container is not running."
