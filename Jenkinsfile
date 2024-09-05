@@ -58,12 +58,13 @@ pipeline {
                     // Kill any existing processes on port 8081
                     echo 'Checking for and killing any processes running on port 8081...'
                     sh '''
-                        if lsof -i :8081; then
-                            echo "Killing processes running on port 8081..."
-                            lsof -t -i :8081 | xargs kill -9
-                        else
-                            echo "No processes running on port 8081."
-                        fi
+                        echo "Finding processes on port 8081..."
+                        lsof -i :8081 || true
+                        echo "Killing processes on port 8081..."
+                        for pid in $(lsof -t -i :8081); do
+                            echo "Killing PID $pid"
+                            kill -9 $pid || true
+                        done
                     '''
 
                     // Copy the built artifacts to the deployment directory
@@ -73,7 +74,7 @@ pipeline {
                     dir(deployDir) {
                         // Start the application in the background
                         echo 'Starting the application in the background...'
-                        sh "nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log 2>&1 &"
+                        sh "nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > ${logDir}/app.log 2>&1 &"
                     }
                 }
             }
