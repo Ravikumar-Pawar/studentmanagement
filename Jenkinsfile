@@ -68,6 +68,12 @@ pipeline {
                         docker rm ${containerName} || true
                     """
 
+                    // Remove any existing Docker image to avoid conflicts (optional)
+                    echo 'Removing any existing Docker image...'
+                    sh """
+                        docker rmi ${imageName} || true
+                    """
+
                     // Run the Docker container
                     echo 'Running Docker container...'
                     sh """

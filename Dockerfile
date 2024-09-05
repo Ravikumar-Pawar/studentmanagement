@@ -1,14 +1,14 @@
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk-alpine
+# Use the official OpenJDK base image
+FROM openjdk:17-jdk-slim
 
-# Set the working directory in the container
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy the JAR file from the local machine to the container
-COPY target/studentmanagement-0.0.1-SNAPSHOT.jar app.jar
+# Copy the JAR file from the target directory of the build context to the working directory
+COPY target/studentmanagement-0.0.1-SNAPSHOT.jar /app/studentmanagement.jar
 
-# Run the JAR file with the port set to 8081
-ENTRYPOINT ["java", "-Dserver.port=8081", "-jar", "/app/app.jar"]
-
-# Expose port 8081
+# Expose the port that the application will run on
 EXPOSE 8081
+
+# Command to run the application
+CMD ["java", "-Dserver.port=8081", "-jar", "studentmanagement.jar"]
