@@ -79,7 +79,7 @@ pipeline {
                         // Start the application in the background
                         echo 'Starting the application in the background...'
                         sh '''
-                            nohup java -jar studentmanagement-*.jar > ${logDir}/app.log 2>&1 &
+                            nohup java -jar studentmanagement-*.jar > logs/app.log 2>&1 &
                             echo "Started application with PID $(pgrep -f studentmanagement)"
                         '''
                     }
