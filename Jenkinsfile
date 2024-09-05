@@ -83,6 +83,7 @@ pipeline {
 //                             java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log
 //                             echo "Started application with PID $(pgrep -f studentmanagement)"
 //                         '''
+                            sh 'chmod +x start.sh'
                             sh '''./start.sh'''
 
                         // Confirm the application is running
