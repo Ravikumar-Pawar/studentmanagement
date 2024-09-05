@@ -11,10 +11,10 @@ services:
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=
     networks:
-      - app-network
+      - student-management_app-network
     extra_hosts:
-      - "host.docker.internal:host-gateway"  # Add this to map host.docker.internal to host-gateway
+      - "host.docker.internal:host-gateway"
 
 networks:
-  app-network:
+  student-management_app-network:
     driver: bridge
