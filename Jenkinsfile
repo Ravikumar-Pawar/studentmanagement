@@ -73,7 +73,7 @@ pipeline {
                     dir(deployDir) {
                         // Start the application in the background
                         echo 'Starting the application in the background...'
-                        sh "nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > ${logDir}/app.log 2>&1 &"
+                        sh "nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log 2>&1 &"
                     }
                 }
             }
