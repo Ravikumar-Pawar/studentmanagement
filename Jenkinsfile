@@ -2,6 +2,30 @@ pipeline {
     agent any
 
     stages {
+        stage('System Info') {
+            steps {
+                script {
+                    echo 'Gathering system information...'
+
+                    // Check Git version
+                    echo 'Checking Git version...'
+                    sh 'git --version'
+
+                    // Check Maven version
+                    echo 'Checking Maven version...'
+                    sh './mvnw -v'
+
+                    // Check Java version
+                    echo 'Checking Java version...'
+                    sh 'java -version'
+
+                    // Check Git connectivity
+                    echo 'Checking Git connectivity...'
+                    sh 'git ls-remote https://github.com/Ravikumar-Pawar/studentmanagement.git'
+                }
+            }
+        }
+
         stage('Checkout') {
             steps {
                 script {
