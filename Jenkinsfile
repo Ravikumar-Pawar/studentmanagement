@@ -67,24 +67,32 @@ pipeline {
                         done
                     '''
 
-                    // Copy the JAR file and the start script to the deployment directory
-                    echo 'Copying JAR file and start script to deployment directory...'
+                    // Copy the JAR file to the deployment directory
+                    echo 'Copying JAR file to deployment directory...'
                     sh "cp target/studentmanagement-0.0.1-SNAPSHOT.jar ${deployDir}/"
-                    sh "cp start.sh ${deployDir}/"
-
 
                     // Change to the deployment directory
                     dir(deployDir) {
-                        // Verify files are present
+                        // Verify JAR file is present
                         sh 'ls -l'
 
-                        // Make the start script executable
-                        echo 'Making start script executable...'
-                        sh 'chmod +x start.sh'
+                        // Start the application in the background
+                        echo 'Starting the application in the background...'
+                        sh '''
+                            nohup java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log 2>&1 &
+                            echo "Started application with PID $(pgrep -f studentmanagement)"
+                        '''
 
-                        // Run the start script
-                        echo 'Running the start script...'
-                        sh './start.sh'
+                        // Confirm the application is running
+                        echo 'Confirming the application is running...'
+                        sh '''
+                            if pgrep -f studentmanagement > /dev/null; then
+                                echo "Application is running."
+                            else
+                                echo "Application is not running."
+                                exit 1
+                            fi
+                        '''
                     }
                 }
             }
