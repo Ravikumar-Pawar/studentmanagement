@@ -1,26 +1,15 @@
 version: '3.8'
 
 services:
-  mysql-db:
-    image: mysql:5.7
-    container_name: mysql-db
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: student_management
-      MYSQL_USER: root
-      MYSQL_PASSWORD: rootpassword
-    ports:
-      - "3307:3306"  # Change host port to 3307
-    networks:
-      - app-network
-
   studentmanagement-app:
     build: .
     container_name: studentmanagement-app
     ports:
       - "8081:8081"
-    depends_on:
-      - mysql-db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/student_management
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
     networks:
       - app-network
 
