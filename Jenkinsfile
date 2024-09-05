@@ -25,7 +25,7 @@ pipeline {
 
                     // Check Docker Compose version
                     echo 'Checking Docker Compose version...'
-                    sh 'docker-compose --version'
+                    sh 'docker compose version'
                 }
             }
         }
