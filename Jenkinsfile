@@ -42,62 +42,49 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    echo 'Building Docker image...'
+                }
+                // Build Docker image from the Dockerfile
+                sh 'docker build -t studentmanagement:latest .'
+            }
+        }
+
         stage('Deploy') {
             steps {
                 script {
-                    echo 'Deploying and running on local system...'
+                    echo 'Deploying and running Docker container...'
 
-                    // Define the local deployment directory and log directory
-                    def deployDir = '/home/rpawar/Desktop/deployment'
-                    def logDir = "${deployDir}/logs"
+                    // Define Docker image name and container name
+                    def imageName = 'studentmanagement:latest'
+                    def containerName = 'studentmanagement-container'
 
-                    // Ensure the deployment and log directories exist
-                    sh "mkdir -p ${deployDir}"
-                    sh "mkdir -p ${logDir}"
+                    // Stop and remove any existing container
+                    echo 'Stopping and removing any existing container...'
+                    sh """
+                        docker stop ${containerName} || true
+                        docker rm ${containerName} || true
+                    """
 
-                    // Kill any existing processes on port 8081
-                    echo 'Checking for and killing any processes running on port 8081...'
+                    // Run the Docker container
+                    echo 'Running Docker container...'
+                    sh """
+                        docker run -d --name ${containerName} -p 8081:8081 ${imageName}
+                    """
+
+                    // Confirm the container is running
+                    echo 'Confirming the Docker container is running...'
                     sh '''
-                        echo "Finding processes on port 8081..."
-                        lsof -i :8081 || true
-                        echo "Killing processes on port 8081..."
-                        for pid in $(lsof -t -i :8081); do
-                            echo "Killing PID $pid"
-                            kill -9 $pid || true
-                        done
+                        sleep 10  # Give some time for the container to start
+                        if docker ps | grep -q studentmanagement-container; then
+                            echo "Docker container is running."
+                        else
+                            echo "Docker container is not running."
+                            exit 1
+                        fi
                     '''
-
-                    // Copy the JAR file to the deployment directory
-                    echo 'Copying JAR file to deployment directory...'
-                    sh "cp target/studentmanagement-0.0.1-SNAPSHOT.jar ${deployDir}/"
-                    sh "cp start.sh ${deployDir}/"
-
-                    // Change to the deployment directory
-                    dir(deployDir) {
-                        // Verify JAR file is present
-                        sh 'ls -l'
-
-                        // Start the application in the background using nohup
-                        echo 'Starting the application in the background...'
-//                         sh '''
-//                             java -jar studentmanagement-0.0.1-SNAPSHOT.jar > logs/app.log
-//                             echo "Started application with PID $(pgrep -f studentmanagement)"
-//                         '''
-                            sh 'chmod +x start.sh'
-                            sh '''./start.sh'''
-
-                        // Confirm the application is running
-                        echo 'Confirming the application is running...'
-                        sh '''
-                            sleep 10  # Give some time for the application to start
-                            if pgrep -f studentmanagement > /dev/null; then
-                                echo "Application is running."
-                            else
-                                echo "Application is not running."
-                                exit 1
-                            fi
-                        '''
-                    }
                 }
             }
         }
