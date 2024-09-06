@@ -67,33 +67,33 @@ pipeline {
 
                     // Remove existing stack services
                     echo 'Removing existing stack services...'
-                    sh """
+                    sh '''
                         docker stack rm studentmanagement || true
-                    """
+                    '''
 
                     // Ensure network is removed if it exists
                     echo 'Ensuring any existing network is removed...'
-                    sh """
+                    sh '''
                         network_exists=$(docker network ls --filter name=studentmanagement_student-management_app-network -q)
                         if [ -n "$network_exists" ]; then
                             docker network rm studentmanagement_student-management_app-network
                         fi
-                    """
+                    '''
 
                     // Create network only if it does not exist
                     echo 'Creating Docker network if not present...'
-                    sh """
+                    sh '''
                         network_exists=$(docker network ls --filter name=studentmanagement_student-management_app-network -q)
                         if [ -z "$network_exists" ]; then
                             docker network create --driver overlay studentmanagement_student-management_app-network
                         fi
-                    """
+                    '''
 
                     // Deploy the stack
                     echo 'Deploying stack with Docker Compose...'
-                    sh """
+                    sh '''
                         docker stack deploy -c ${composeFile} studentmanagement
-                    """
+                    '''
 
                     // Confirm the application is running
                     echo 'Confirming the application is running...'
