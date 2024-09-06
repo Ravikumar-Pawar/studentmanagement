@@ -39,6 +39,17 @@ pipeline {
             }
         }
 
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    echo 'Running SonarQube analysis...'
+                }
+                withSonarQubeEnv('sonarqube') {
+                    sh './mvnw sonar:sonar -Dsonar.projectKey=studentmanagement -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_LOGIN'
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
