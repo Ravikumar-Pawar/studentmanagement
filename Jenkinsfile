@@ -45,7 +45,9 @@ pipeline {
                     echo 'Running SonarQube analysis...'
                 }
                 withSonarQubeEnv('sonarqube') {
-                    sh './mvnw sonar:sonar -Dsonar.projectKey=sutdentmanagement -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=sonar'
+                    withCredentials([usernamePassword(credentialsId: 'sonar-login', passwordVariable: 'SONAR_PASSWORD', usernameVariable: 'SONAR_USERNAME')]) {
+                        sh './mvnw sonar:sonar -Dsonar.projectKey=studentmanagement -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_USERNAME -Dsonar.password=$SONAR_PASSWORD'
+                    }
                 }
             }
         }
