@@ -13,7 +13,7 @@ services:
     networks:
       - student-management_app-network
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway"  # Ensures the database service can reach the host
 
 networks:
   student-management_app-network:
