@@ -99,6 +99,7 @@ pipeline {
     post {
         success {
             echo 'Pipeline completed successfully!'
+            echo 'check application accessible or not http://127.0.0.1:8081/students'
         }
         failure {
             echo 'Pipeline failed.'
