@@ -69,6 +69,15 @@ pipeline {
                     echo 'Removing existing stack services...'
                     sh 'docker stack rm studentmanagement || true'
 
+                    // Ensure any existing network is removed
+                    echo 'Removing existing network if it exists...'
+                    sh '''
+                        network_exists=$(docker network ls --filter name=studentmanagement_student-management_app-network -q)
+                        if [ -n "$network_exists" ]; then
+                            docker network rm studentmanagement_student-management_app-network
+                        fi
+                    '''
+
                     // Deploy the stack
                     echo 'Deploying stack with Docker Compose...'
                     sh "docker stack deploy -c ${composeFile} studentmanagement"
