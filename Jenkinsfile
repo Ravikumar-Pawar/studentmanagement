@@ -91,9 +91,9 @@ pipeline {
 
                     // Deploy the stack
                     echo 'Deploying stack with Docker Compose...'
-                    sh '''
+                    sh """
                         docker stack deploy -c ${composeFile} studentmanagement
-                    '''
+                    """
 
                     // Confirm the application is running
                     echo 'Confirming the application is running...'
