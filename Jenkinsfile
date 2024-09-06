@@ -65,10 +65,16 @@ pipeline {
                     // Define Docker Compose file path
                     def composeFile = 'docker-compose.yml'
 
-                    // Stop and remove any existing services
+                    // Remove existing stack services
                     echo 'Removing existing stack services...'
                     sh """
                         docker stack rm studentmanagement || true
+                    """
+
+                    // Ensure network is removed and recreated
+                    echo 'Removing existing network if present...'
+                    sh """
+                        docker network rm studentmanagement_student-management_app-network || true
                     """
 
                     // Deploy the stack
