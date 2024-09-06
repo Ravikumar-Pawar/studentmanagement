@@ -60,35 +60,32 @@ pipeline {
             }
         }
 
-        stage('Deploy with Docker Compose') {
+        stage('Deploy with Docker Swarm') {
             steps {
                 script {
-                    echo 'Deploying with Docker Compose...'
+                    echo 'Deploying with Docker Swarm...'
 
                     // Define Docker Compose file path
                     def composeFile = 'docker-compose.yml'
 
-                    // Stop and remove any existing containers
-                    echo 'Stopping and removing any existing containers...'
-                    sh """
-                        docker compose -f ${composeFile} down || true
-                    """
+                    // Initialize Docker Swarm if not already initialized
+                    echo 'Initializing Docker Swarm...'
+                    sh 'docker swarm init || true'
 
-                    // Run Docker Compose to start the containers with scaling
-                    echo 'Starting containers with Docker Compose...'
+                    // Deploy the stack with Docker Compose
+                    echo 'Deploying stack with Docker Compose...'
                     sh """
-                        docker compose -f ${composeFile} up -d
-                        docker compose -f ${composeFile} up --scale studentmanagement-app=2 -d
+                        docker stack deploy -c ${composeFile} studentmanagement
                     """
 
                     // Confirm the application is running
                     echo 'Confirming the application is running...'
                     sh '''
                         sleep 10  # Give some time for the containers to start
-                        if docker compose ps | grep -q studentmanagement; then
-                            echo "Docker container is running."
+                        if docker stack ps studentmanagement | grep -q "running"; then
+                            echo "Docker stack is running."
                         else
-                            echo "Docker container is not running."
+                            echo "Docker stack is not running."
                             exit 1
                         fi
                     '''
