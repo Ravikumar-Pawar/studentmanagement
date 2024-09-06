@@ -77,6 +77,12 @@ pipeline {
                         docker network rm studentmanagement_student-management_app-network || true
                     """
 
+                    // Recreate network manually if needed
+                    echo 'Creating Docker network...'
+                    sh """
+                        docker network create --driver overlay studentmanagement_student-management_app-network || true
+                    """
+
                     // Deploy the stack
                     echo 'Deploying stack with Docker Compose...'
                     sh """
