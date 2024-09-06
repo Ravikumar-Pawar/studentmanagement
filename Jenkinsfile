@@ -46,7 +46,7 @@ pipeline {
                 }
                 withSonarQubeEnv('sonarqube') {
                     //sh './mvnw sonar:sonar -Dsonar.projectKey=studentmanagement -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_LOGIN'
-                    mvn sonar:sonar -Dsonar.projectKey=studentmanagement -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_LOGIN
+                    mvn 'sonar:sonar -Dsonar.projectKey=studentmanagement -Dsonar.host.url=http://localhost:9000 -Dsonar.login=$SONAR_LOGIN'
 
                 }
             }
