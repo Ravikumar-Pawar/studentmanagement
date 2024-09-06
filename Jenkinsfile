@@ -75,14 +75,16 @@ pipeline {
                     echo 'Ensuring any existing network is removed...'
                     sh """
                         if docker network ls --filter name=studentmanagement_student-management_app-network -q | grep -q .; then
-                            docker network rm studentmanagement_student-management_app-network
+                            docker network rm studentmanagement_student-management_app-network || true
                         fi
                     """
 
                     // Recreate network
                     echo 'Creating Docker network...'
                     sh """
-                        docker network create --driver overlay studentmanagement_student-management_app-network || true
+                        if ! docker network ls --filter name=studentmanagement_student-management_app-network -q | grep -q .; then
+                            docker network create --driver overlay studentmanagement_student-management_app-network
+                        fi
                     """
 
                     // Deploy the stack
