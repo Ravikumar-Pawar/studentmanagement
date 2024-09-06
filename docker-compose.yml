@@ -9,11 +9,23 @@ services:
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/student_management
       - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_PROFILES_ACTIVE=dev  # Use development profile
     networks:
       - student-management_app-network
     extra_hosts:
-      - "host.docker.internal:host-gateway"  # Ensures the database service can reach the host
+      - "host.docker.internal:host-gateway"  # Maps the host for internal access
+    deploy:
+      replicas: 2  # Number of replicas
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   student-management_app-network:
