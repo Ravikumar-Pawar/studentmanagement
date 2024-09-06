@@ -68,16 +68,17 @@ pipeline {
                     // Define Docker Compose file path
                     def composeFile = 'docker-compose.yml'
 
-                    // Stop and remove any existing container defined in the Docker Compose file
+                    // Stop and remove any existing containers
                     echo 'Stopping and removing any existing containers...'
                     sh """
                         docker compose -f ${composeFile} down || true
                     """
 
-                    // Run Docker Compose to start the containers
+                    // Run Docker Compose to start the containers with scaling
                     echo 'Starting containers with Docker Compose...'
                     sh """
                         docker compose -f ${composeFile} up -d
+                        docker compose -f ${composeFile} up --scale studentmanagement-app=2 -d
                     """
 
                     // Confirm the application is running

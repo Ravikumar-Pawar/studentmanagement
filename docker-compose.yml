@@ -3,7 +3,6 @@ version: '3.8'
 services:
   studentmanagement-app:
     build: .
-    container_name: studentmanagement-app
     ports:
       - "8081:8081"
     environment:
@@ -14,8 +13,6 @@ services:
       - student-management_app-network
     extra_hosts:
       - "host.docker.internal:host-gateway"  # Maps the host for internal access
-    deploy:
-      replicas: 2  # Number of replicas
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
       interval: 30s
