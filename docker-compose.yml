@@ -4,7 +4,7 @@ services:
   studentmanagement-app:
     image: studentmanagement:latest  # Specify the pre-built image
     ports:
-      - "8081:8080"  # Maps container port 8080 to host port 8081
+      - "8081:8081"  # Maps container port 8080 to host port 8081
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/student_management
       - SPRING_DATASOURCE_USERNAME=root
