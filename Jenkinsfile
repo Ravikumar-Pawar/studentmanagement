@@ -57,6 +57,23 @@ pipeline {
             }
         }
 
+        stage('Push Docker Image to Hub') {
+            steps {
+                script {
+                    echo 'Pushing Docker image to Docker Hub...'
+
+                    // Log in to Docker Hub
+                    withCredentials([usernamePassword(credentialsId: 'docker-login', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin'
+                    }
+
+                    // Tag and push the image
+                    sh 'docker tag studentmanagement:latest ravikumarpawar/studentmanagement:latest'
+                    sh 'docker push ravikumarpawar/studentmanagement:latest'
+                }
+            }
+        }
+
         stage('Deploy with Docker Swarm') {
             steps {
                 script {
@@ -99,7 +116,7 @@ pipeline {
     post {
         success {
             echo 'Pipeline completed successfully!'
-            echo 'check application accessible or not http://127.0.0.1:8081/students'
+            echo 'Check if the application is accessible at http://127.0.0.1:8081/students'
         }
         failure {
             echo 'Pipeline failed.'
