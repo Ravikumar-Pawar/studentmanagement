@@ -85,7 +85,7 @@ pipeline {
                     // Confirm the application is running
                     echo 'Confirming the application is running...'
                     sh '''
-                        sleep 10  # Give some time for the containers to start
+                        sleep 40  # Give some time for the containers to start
                         if docker stack ps studentmanagement | grep -q "running"; then
                             echo "Docker stack is running."
                         else
