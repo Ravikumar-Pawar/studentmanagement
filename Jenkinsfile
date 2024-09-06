@@ -35,7 +35,6 @@ pipeline {
                 script {
                     echo 'Checking out the code from GitHub...'
                 }
-                // Checkout code from GitHub using token authentication and specify the branch
                 git branch: 'main', credentialsId: 'github-login', url: 'https://github.com/Ravikumar-Pawar/studentmanagement.git'
             }
         }
@@ -45,7 +44,6 @@ pipeline {
                 script {
                     echo 'Building the project...'
                 }
-                // Build the project using Maven wrapper
                 sh './mvnw clean install'
             }
         }
@@ -55,7 +53,6 @@ pipeline {
                 script {
                     echo 'Building Docker image...'
                 }
-                // Build Docker image from the Dockerfile
                 sh 'docker build -t studentmanagement:latest .'
             }
         }
@@ -68,11 +65,13 @@ pipeline {
                     // Define Docker Compose file path
                     def composeFile = 'docker-compose.yml'
 
-                    // Initialize Docker Swarm if not already initialized
-                    echo 'Initializing Docker Swarm...'
-                    sh 'docker swarm init || true'
+                    // Stop and remove any existing services
+                    echo 'Removing existing stack services...'
+                    sh """
+                        docker stack rm studentmanagement || true
+                    """
 
-                    // Deploy the stack with Docker Compose
+                    // Deploy the stack
                     echo 'Deploying stack with Docker Compose...'
                     sh """
                         docker stack deploy -c ${composeFile} studentmanagement
