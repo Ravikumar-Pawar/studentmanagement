@@ -79,7 +79,7 @@ pipeline {
                     // Confirm the application is running
                     echo 'Confirming the application is running...'
                     sh '''
-                        sleep 40  # Give some time for the containers to start
+                        sleep 60  # Give some time for the containers to start
                         echo "Checking Docker stack status..."
                         docker stack ps studentmanagement
                         docker service ls
