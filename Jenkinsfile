@@ -67,20 +67,10 @@ pipeline {
 
                     // Remove existing stack services
                     echo 'Removing existing stack services...'
-                    sh 'docker stack rm studentmanagement || true'
-
-                    // Ensure any existing network is removed
                     sh '''
-                        echo "Removing existing network if it exists..."
-                        network_exists=$(docker network ls --filter name=studentmanagement_student-management_app-network -q)
-                        if [ -n "$network_exists" ]; then
-                            echo "Network exists. Removing..."
-                            docker network rm $network_exists || true
-                        else
-                            echo "Network does not exist."
-                        fi
+                        docker stack rm studentmanagement || true
+                        sleep 10  # Allow time for removal
                     '''
-
 
                     // Deploy the stack
                     echo 'Deploying stack with Docker Compose...'
@@ -90,6 +80,9 @@ pipeline {
                     echo 'Confirming the application is running...'
                     sh '''
                         sleep 40  # Give some time for the containers to start
+                        echo "Checking Docker stack status..."
+                        docker stack ps studentmanagement
+                        docker service ls
                         if docker stack ps studentmanagement | grep -q "running"; then
                             echo "Docker stack is running."
                         else
