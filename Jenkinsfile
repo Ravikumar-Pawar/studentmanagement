@@ -74,15 +74,17 @@ pipeline {
                     // Ensure network is removed if it exists
                     echo 'Ensuring any existing network is removed...'
                     sh """
-                        if docker network ls --filter name=studentmanagement_student-management_app-network -q | grep -q .; then
-                            docker network rm studentmanagement_student-management_app-network || true
+                        network_exists=$(docker network ls --filter name=studentmanagement_student-management_app-network -q)
+                        if [ -n "$network_exists" ]; then
+                            docker network rm studentmanagement_student-management_app-network
                         fi
                     """
 
-                    // Recreate network
-                    echo 'Creating Docker network...'
+                    // Create network only if it does not exist
+                    echo 'Creating Docker network if not present...'
                     sh """
-                        if ! docker network ls --filter name=studentmanagement_student-management_app-network -q | grep -q .; then
+                        network_exists=$(docker network ls --filter name=studentmanagement_student-management_app-network -q)
+                        if [ -z "$network_exists" ]; then
                             docker network create --driver overlay studentmanagement_student-management_app-network
                         fi
                     """
