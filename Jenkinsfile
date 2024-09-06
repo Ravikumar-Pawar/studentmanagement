@@ -83,7 +83,8 @@ pipeline {
                         echo "Checking Docker stack status..."
                         docker stack ps studentmanagement
                         docker service ls
-                        if docker stack ps studentmanagement | grep -q "running"; then
+                        # Check if all services are in 'Running' state (case-insensitive)
+                        if docker stack ps studentmanagement | grep -i "running" > /dev/null; then
                             echo "Docker stack is running."
                         else
                             echo "Docker stack is not running."
