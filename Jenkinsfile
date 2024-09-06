@@ -71,17 +71,24 @@ pipeline {
                         docker stack rm studentmanagement || true
                     """
 
-                    // Ensure network is removed and recreated
+                    // Ensure network is removed
                     echo 'Removing existing network if present...'
                     sh """
                         docker network rm studentmanagement_student-management_app-network || true
                     """
 
-                    // Recreate network manually if needed
-                    echo 'Creating Docker network...'
-                    sh """
-                        docker network create --driver overlay studentmanagement_student-management_app-network || true
-                    """
+                    // Check if network exists before creating it
+                    echo 'Checking if network exists and creating it if necessary...'
+                    def networkExists = sh(script: 'docker network ls --filter name=studentmanagement_student-management_app-network -q', returnStdout: true).trim()
+
+                    if (networkExists) {
+                        echo 'Network exists. Skipping creation...'
+                    } else {
+                        echo 'Creating Docker network...'
+                        sh """
+                            docker network create --driver overlay studentmanagement_student-management_app-network
+                        """
+                    }
 
                     // Deploy the stack
                     echo 'Deploying stack with Docker Compose...'
