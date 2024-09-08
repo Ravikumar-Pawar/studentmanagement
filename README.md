@@ -81,7 +81,8 @@ docker restart <container_id>
 
 # Execute a Command Inside a Running Container
 docker exec -it <container_id> <command>
-```
+
+
 # Check Running Services
 docker-compose ps
 
@@ -104,7 +105,23 @@ docker-compose config
 docker-compose restart
 
 
+#remove all Docker images
+docker rmi $(docker images -q)
 
+#forcefully remove images
+docker rmi -f $(docker images -q)
+
+#remove dangling (untagged) images:
+docker image prune
+
+#To remove all unused images (not just dangling ones),
+docker image prune -a
+
+#Remove all images, containers, and volumes (more aggressive cleanup):
+docker system prune -a --volumes
+
+
+```
 # View Jenkins Logs
 docker logs <jenkins_container_id>
 
