@@ -9,6 +9,10 @@ pipeline {
         dockerTool 'Docker 27.2'  // Docker tool configured in Jenkins
     }
 
+    environment {
+        JAVA_HOME = tool name: 'OpenJDK 17', type: 'jdk'
+    }
+
     stages {
         stage('System Info') {
             steps {
@@ -33,6 +37,7 @@ pipeline {
                     echo 'Checking Java version and installation path...'
                     sh '''
                         java -version
+                        echo "JAVA_HOME is set to $JAVA_HOME"
                         which java
                     '''
 
