@@ -7,25 +7,40 @@ pipeline {
                 script {
                     echo 'Gathering system information...'
 
-                    // Check Git version
-                    echo 'Checking Git version...'
-                    sh 'git --version'
+                    // Check Git version and installation path
+                    echo 'Checking Git version and installation path...'
+                    sh '''
+                        git --version
+                        which git
+                    '''
 
-                    // Check Maven version
-                    echo 'Checking Maven version...'
-                    sh './mvnw -v'
+                    // Check Maven version and installation path
+                    echo 'Checking Maven version and installation path...'
+                    sh '''
+                        ./mvnw -v
+                        which mvn || echo "Maven wrapper (mvnw) used."
+                    '''
 
-                    // Check Java version
-                    echo 'Checking Java version...'
-                    sh 'java -version'
+                    // Check Java version and installation path
+                    echo 'Checking Java version and installation path...'
+                    sh '''
+                        java -version
+                        which java
+                    '''
 
-                    // Check Docker version
-                    echo 'Checking Docker version...'
-                    sh 'docker --version'
+                    // Check Docker version and installation path
+                    echo 'Checking Docker version and installation path...'
+                    sh '''
+                        docker --version
+                        which docker
+                    '''
 
-                    // Check Docker Compose version
-                    echo 'Checking Docker Compose version...'
-                    sh 'docker compose version'
+                    // Check Docker Compose version and installation path
+                    echo 'Checking Docker Compose version and installation path...'
+                    sh '''
+                        docker compose version
+                        which docker-compose || which docker || echo "Docker Compose included in Docker CLI."
+                    '''
                 }
             }
         }
