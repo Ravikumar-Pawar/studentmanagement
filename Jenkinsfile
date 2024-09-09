@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         // Define global tools for the pipeline
-        git 'Git 2.43'            // Assuming you have a Git tool configured in Jenkins with this name
+        git 'Default'            // Assuming you have a Git tool configured in Jenkins with this name
         maven 'Maven 3.9.7'       // Maven tool configured in Jenkins
         jdk 'OpenJDK 17'          // JDK configured in Jenkins
         dockerTool 'Docker 27.2'  // Docker tool configured in Jenkins
