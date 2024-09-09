@@ -121,6 +121,12 @@ docker image prune -a
 docker system prune -a --volumes
 
 
+#leave and re-init swarm
+docker swarm leave --force
+docker swarm init
+
+
+
 ```
 # View Jenkins Logs
 docker logs <jenkins_container_id>
