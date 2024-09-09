@@ -174,10 +174,15 @@ pipeline {
     post {
         success {
             echo 'Pipeline completed successfully!'
-            echo 'Check if the application is accessible at http://127.0.0.1:8081/students'
+            echo 'Check if the application is accessible at http://127.0.0.1:8085/students'
         }
         failure {
             echo 'Pipeline failed.'
+            echo '
+                execute following commands to troubleshoot with swarm related issues
+              docker swarm leave --force
+              docker swarm init
+              '
         }
     }
 }
