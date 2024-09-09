@@ -11,8 +11,8 @@ pipeline {
 
     environment {
         JAVA_HOME = tool name: 'OpenJDK 17', type: 'jdk'
+        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
     }
-
     stages {
         stage('System Info') {
             steps {
