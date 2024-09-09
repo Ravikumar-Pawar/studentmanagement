@@ -1,18 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        // Define global tools for the pipeline
-        git 'Default'            // Assuming you have a Git tool configured in Jenkins with this name
-        maven 'Maven 3.9.7'       // Maven tool configured in Jenkins
-        jdk 'OpenJDK 17'          // JDK configured in Jenkins
-        dockerTool 'Docker 27.2'  // Docker tool configured in Jenkins
-    }
-
-    environment {
-        JAVA_HOME = tool name: 'OpenJDK 17', type: 'jdk'
-        PATH = "${env.JAVA_HOME}/bin:${env.PATH}"
-    }
     stages {
         stage('System Info') {
             steps {
@@ -37,7 +25,6 @@ pipeline {
                     echo 'Checking Java version and installation path...'
                     sh '''
                         java -version
-                        echo "JAVA_HOME is set to $JAVA_HOME"
                         which java
                     '''
 
@@ -46,6 +33,13 @@ pipeline {
                     sh '''
                         docker --version
                         which docker
+                    '''
+
+                    // Check Docker Compose version and installation path
+                    echo 'Checking Docker Compose version and installation path...'
+                    sh '''
+                        docker compose version
+                        which docker-compose || which docker || echo "Docker Compose included in Docker CLI."
                     '''
                 }
             }
