@@ -1,5 +1,30 @@
 # Project Documentation
 
+## start services 
+```bash
+# To start Docker service
+sudo systemctl start docker
+
+# To start Jenkins service
+sudo systemctl start jenkins
+
+# To start SonarQube service
+sudo systemctl start sonarqube
+
+# To start Artifactory service
+sudo systemctl start artifactory
+
+
+````
+### standart ports used
+```bash
+Jenkins:                8080
+Artifactory:            8081
+SonarQube:              9000
+Student Management App: 8085
+
+```
+
 ## Table of Contents
 
 1. [Database Configuration](#database-configuration)
