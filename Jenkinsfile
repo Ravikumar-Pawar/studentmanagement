@@ -45,6 +45,24 @@ pipeline {
             }
         }
 
+        stage('Environment Info') {
+            steps {
+                script {
+                    echo 'Printing environment variables...'
+                    sh '''
+                        echo "JENKINS_HOME: $JENKINS_HOME"
+                        echo "WORKSPACE: $WORKSPACE"
+                        echo "BUILD_ID: $BUILD_ID"
+                        echo "BUILD_NUMBER: $BUILD_NUMBER"
+                        echo "NODE_NAME: $NODE_NAME"
+                        echo "EXECUTOR_NUMBER: $EXECUTOR_NUMBER"
+                        echo "JOB_NAME: $JOB_NAME"
+                        echo "GIT_COMMIT: $GIT_COMMIT"
+                    '''
+                }
+            }
+        }
+
         stage('Checkout') {
             steps {
                 script {
