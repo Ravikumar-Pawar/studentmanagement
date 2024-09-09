@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/studentmanagement-0.0.1-SNAPSHOT.jar /app/studentmanagement.jar
 
 # Expose the port that the application will run on
-EXPOSE 8081
+EXPOSE 8085
 
 # Command to run the application
 CMD ["java", "-Dserver.port=8081", "-jar", "studentmanagement.jar"]
