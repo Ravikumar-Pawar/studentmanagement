@@ -178,11 +178,12 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed.'
-            echo '
-                execute following commands to troubleshoot with swarm related issues
-              docker swarm leave --force
-              docker swarm init
-              '
+            sh '''
+                echo "Execute the following commands to troubleshoot Swarm-related issues:"
+                echo "docker swarm leave --force"
+                echo "docker swarm init"
+            '''
+
         }
     }
 }
