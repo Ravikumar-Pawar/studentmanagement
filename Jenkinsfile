@@ -94,6 +94,18 @@ pipeline {
             }
         }
 
+        stage('Artifactory Push') {
+            steps {
+                script {
+                    echo 'Pushing build artifacts to Artifactory...'
+                }
+                withCredentials([usernamePassword(credentialsId: 'artifactory-access', passwordVariable: 'ARTIFACTORY_PASSWORD', usernameVariable: 'ARTIFACTORY_USERNAME')]) {
+                    sh '''
+                        curl -u $ARTIFACTORY_USERNAME:$ARTIFACTORY_PASSWORD -T target/studentmanagement-*.jar "http://localhost:8081/artifactory/example-repo-local/studentmanagement/studentmanagement-1.0.jar"
+                    '''
+                }
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
