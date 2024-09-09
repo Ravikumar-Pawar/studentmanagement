@@ -11,4 +11,4 @@ COPY target/studentmanagement-0.0.1-SNAPSHOT.jar /app/studentmanagement.jar
 EXPOSE 8085
 
 # Command to run the application
-CMD ["java", "-Dserver.port=8081", "-jar", "studentmanagement.jar"]
+CMD ["java", "-Dserver.port=8085", "-jar", "studentmanagement.jar"]
