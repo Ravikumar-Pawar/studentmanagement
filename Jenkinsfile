@@ -71,6 +71,10 @@ pipeline {
                 git branch: 'main', credentialsId: 'github-login', url: 'https://github.com/Ravikumar-Pawar/studentmanagement.git'
             }
         }
+
+
+
+
 stage('SonarQube Analysis') {
     steps {
         script {
@@ -89,7 +93,7 @@ stage('SonarQube Analysis') {
                 -Dsonar.jacoco.reportPaths=target/jacoco.exec \
                 -Dsonar.sourceEncoding=UTF-8 \
                 -Dsonar.java.binaries=target/classes \
-                -Dsonar.junit.reportPaths=target/test-classes
+                -Dsonar.junit.reportPaths=target/surefire-reports
                 '''
             }
         }
