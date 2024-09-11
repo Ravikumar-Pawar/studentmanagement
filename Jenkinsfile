@@ -71,23 +71,31 @@ pipeline {
                 git branch: 'main', credentialsId: 'github-login', url: 'https://github.com/Ravikumar-Pawar/studentmanagement.git'
             }
         }
-
-    stage('SonarQube Analysis') {
-        steps {
-            script {
-                echo 'Running SonarQube analysis...'
-            }
-            withSonarQubeEnv('sonarqube') {
-                withCredentials([usernamePassword(credentialsId: 'sonar-login', passwordVariable: 'SONAR_PASSWORD', usernameVariable: 'SONAR_USERNAME')]) {
-                    sh '''./mvnw sonar:sonar 
-                    -Dsonar.login=$SONAR_USERNAME 
-                    -Dsonar.password=$SONAR_PASSWORD
-                    -Dsonar.project.settings=sonar-project.properties
-                    '''
-                }
+stage('SonarQube Analysis') {
+    steps {
+        script {
+            echo 'Running SonarQube analysis...'
+        }
+        withSonarQubeEnv('sonarqube') {
+            withCredentials([usernamePassword(credentialsId: 'sonar-login', passwordVariable: 'SONAR_PASSWORD', usernameVariable: 'SONAR_USERNAME')]) {
+                sh '''./mvnw sonar:sonar \
+                -Dsonar.login=$SONAR_USERNAME \
+                -Dsonar.password=$SONAR_PASSWORD \
+                -Dsonar.projectKey=studentmanagement \
+                -Dsonar.projectName="Student Management System" \
+                -Dsonar.projectVersion=1.0 \
+                -Dsonar.sources=src/main/java \
+                -Dsonar.tests=src/test/java \
+                -Dsonar.jacoco.reportPaths=target/jacoco.exec \
+                -Dsonar.sourceEncoding=UTF-8 \
+                -Dsonar.java.binaries=target/classes \
+                -Dsonar.junit.reportPaths=target/test-classes
+                '''
             }
         }
     }
+}
+
 
 
         stage('Build') {
