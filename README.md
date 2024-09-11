@@ -150,6 +150,14 @@ docker system prune -a --volumes
 docker swarm leave --force
 docker swarm init
 
+#If you scaled down the service earlier, you can restart it by scaling it back up to the desired number of replicas.
+docker service scale <service-name>=<replicas>
+
+## for student application
+docker service scale studentmanagement_studentmanagement-app=2
+
+## Restarting a Service Gracefully
+docker service update --force <service-name>
 
 
 ```
