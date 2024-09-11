@@ -79,11 +79,11 @@ pipeline {
             }
             withSonarQubeEnv('sonarqube') {
                 withCredentials([usernamePassword(credentialsId: 'sonar-login', passwordVariable: 'SONAR_PASSWORD', usernameVariable: 'SONAR_USERNAME')]) {
-                    sh './mvnw sonar:sonar 
+                    sh '''./mvnw sonar:sonar 
                     -Dsonar.login=$SONAR_USERNAME 
                     -Dsonar.password=$SONAR_PASSWORD
                     -Dsonar.project.settings=sonar-project.properties
-                    '
+                    '''
                 }
             }
         }
