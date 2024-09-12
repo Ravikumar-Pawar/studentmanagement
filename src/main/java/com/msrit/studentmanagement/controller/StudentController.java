@@ -18,6 +18,8 @@ public class StudentController {
 
     @GetMapping
     public ResponseEntity<?> getAllStudents() {
+
+
         List<Student> students = studentService.getAllStudents();
         if (students.isEmpty()) {
             return new ResponseEntity<>("No students found", HttpStatus.NO_CONTENT);
