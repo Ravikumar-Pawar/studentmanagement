@@ -185,4 +185,5 @@ java -jar jenkins-cli.jar -s http://<jenkins_url> <command>
 # Restart Jenkins Service
 sudo systemctl restart jenkins
 # Or
+
 sudo service jenkins restart
