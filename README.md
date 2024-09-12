@@ -186,3 +186,9 @@ java -jar jenkins-cli.jar -s http://<jenkins_url> <command>
 sudo systemctl restart jenkins
 # Or
 sudo service jenkins restart
+
+
+
+
+
+# this change is from system number 20
