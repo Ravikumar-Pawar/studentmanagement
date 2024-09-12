@@ -64,14 +64,14 @@ public class StudentmanagementApplicationTests {
 
 	@Test
 	public void testGetStudentByUsn() throws Exception {
-		Student student = new Student(null, "1ms24cs122", "Rohan", "rohan@gmail.com", "123444", "AI,ML");
-		when(studentService.getStudentByUsn("1ms24cs122")).thenReturn(student);
+		Student student = new Student(null, "1ms24cs300", "Rohan", "rohan@gmail.com", "123444", "AI,ML");
+		when(studentService.getStudentByUsn("1ms24cs300")).thenReturn(student);
 
-		mockMvc.perform(get("/api/students/usn/1ms24cs122")
+		mockMvc.perform(get("/api/students/usn/1ms24cs300")
 						.contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-				.andExpect(jsonPath("$.usn", is("1ms24cs122")))
+				.andExpect(jsonPath("$.usn", is("1ms24cs300")))
 				.andExpect(jsonPath("$.name", is("Rohan")));
 	}
 
